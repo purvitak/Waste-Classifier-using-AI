@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoClassify Vision - AI Waste Segregation</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-sun"></i>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="container">
+            <div class="brand">
+                <i class="fas fa-recycle"></i>
+                <h1>EcoClassify <span class="vision">Vision</span></h1>
+            </div>
+            <div class="tagline">
+                <span class="badge">Transforming Waste Management with AI</span>
+            </div>
+            <h2 class="hero-title">AI Waste Segregation System</h2>
+            <p class="hero-description">
+                Using advanced computer vision to automatically classify waste into recyclable 
+                categories, promoting sustainability and efficient recycling.
+            </p>
+            
+            <!-- Feature Cards -->
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon camera">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3>Real-time Detection</h3>
+                    <p>Classify waste instantly using your device's camera.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon eco">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Eco-Friendly</h3>
+                    <p>Promote recycling and reduce environmental impact.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon ai">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered</h3>
+                    <p>Deep learning model trained to recognize waste types.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Classification Section -->
+    <main class="main-section">
+        <div class="container">
+            <!-- Detection Mode Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="upload">
+                    <i class="fas fa-upload"></i> Upload Image
+                </button>
+                <button class="tab-btn" data-tab="webcam">
+                    <i class="fas fa-video"></i> Capture from Webcam
+                </button>
+                <button class="tab-btn" data-tab="live">
+                    <i class="fas fa-broadcast-tower"></i> Live Detection
+                </button>
+            </div>
+
+            <!-- Upload Image Tab Content -->
+            <div class="tab-content active" id="upload-tab">
+                <div class="upload-section">
+                    <div class="upload-zone" id="uploadZone">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <h3>Upload Waste Image</h3>
+                        <p>Drag & drop your image here or</p>
+                        <button class="browse-btn" id="browseBtn">Browse Files</button>
+                        <input type="file" id="fileInput" accept="image/jpeg,image/jpg,image/png" hidden>
+                        <p class="file-info">Limit 20MB per file • JPG, JPEG, PNG</p>
+                    </div>
+                </div>
+
+                <div class="results-container">
+                    <div class="result-panel">
+                        <div class="panel-header">
+                            <i class="fas fa-image"></i>
+                            <h3>Uploaded Image</h3>
+                        </div>
+                        <div class="panel-content" id="imagePreview">
+                            <div class="empty-state">
+                                <i class="fas fa-image"></i>
+                                <p>No image uploaded</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-panel">
+                        <div class="panel-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <h3>Segregation Result</h3>
+                        </div>
+                        <div class="panel-content" id="resultContent">
+                            <div class="empty-state">
+                                <i class="fas fa-file-alt"></i>
+                                <p>Results will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Disposal Instructions Panel -->
+                <div class="disposal-panel" id="disposalPanel" style="display: none;">
+                    <div class="panel-header">
+                        <i class="fas fa-recycle"></i>
+                        <h3>Disposal Instructions</h3>
+                    </div>
+                    <div class="panel-content" id="disposalContent"></div>
+                </div>
+
+                <!-- Educational Fact Panel -->
+                <div class="fact-panel" id="factPanel" style="display: none;">
+                    <div class="panel-header">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>Did You Know?</h3>
+                    </div>
+                    <div class="panel-content" id="factContent"></div>
+                </div>
+
+                <div style="display: none;">
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-process" id="processBtn" disabled>
+                        <i class="fas fa-cog"></i> Process Image
+                    </button>
+                    <button class="btn btn-reset" id="resetBtn">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Webcam Tab Content -->
+            <div class="tab-content" id="webcam-tab">
+                <div class="webcam-section">
+                    <div class="webcam-container">
+                        <video id="webcamVideo" autoplay playsinline></video>
+                        <canvas id="webcamCanvas" hidden></canvas>
+                        <div class="webcam-overlay" id="webcamOverlay">
+                            <i class="fas fa-camera"></i>
+                            <p>Click "Start Webcam" to begin</p>
+                        </div>
+                    </div>
+                    <div class="webcam-controls">
+                        <button class="btn btn-process" id="startWebcamBtn">
+                            <i class="fas fa-video"></i> Start Webcam
+                        </button>
+                        <button class="btn btn-process" id="captureBtn" disabled>
+                            <i class="fas fa-camera"></i> Capture & Classify
+                        </button>
+                        <button class="btn btn-reset" id="stopWebcamBtn" disabled>
+                            <i class="fas fa-stop"></i> Stop Webcam
+                        </button>
+                    </div>
+                </div>
+
+                <div class="results-container" id="webcamResults" style="display: none;">
+                    <div class="result-panel">
+                        <div class="panel-header">
+                            <i class="fas fa-image"></i>
+                            <h3>Captured Image</h3>
+                        </div>
+                        <div class="panel-content" id="webcamImagePreview"></div>
+                    </div>
+
+                    <div class="result-panel">
+                        <div class="panel-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <h3>Segregation Result</h3>
+                        </div>
+                        <div class="panel-content" id="webcamResultContent"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Detection Tab Content -->
+            <div class="tab-content" id="live-tab">
+                <div class="live-section">
+                    <div class="live-container">
+                        <video id="liveVideo" autoplay playsinline></video>
+                        <canvas id="liveCanvas" hidden></canvas>
+                        <div class="live-overlay" id="liveOverlay">
+                            <i class="fas fa-broadcast-tower"></i>
+                            <p>Click "Start Live Detection" to begin</p>
+                        </div>
+                        <div class="live-result-overlay" id="liveResultOverlay" style="display: none;">
+                            <div class="live-prediction">
+                                <span class="prediction-label" id="livePredictionLabel">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="live-controls">
+                        <button class="btn btn-process" id="startLiveBtn">
+                            <i class="fas fa-play"></i> Start Live Detection
+                        </button>
+                        <button class="btn btn-reset" id="stopLiveBtn" disabled>
+                            <i class="fas fa-stop"></i> Stop Detection
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Classification History -->
+            <div class="history-section">
+                <div class="history-header">
+                    <h3><i class="fas fa-history"></i> Classification History</h3>
+                    <button class="btn-clear-history" id="clearHistoryBtn">
+                        <i class="fas fa-trash"></i> Clear History
+                    </button>
+                </div>
+                <div class="history-content" id="historyContent">
+                    <p class="no-history">No classifications yet. Start by uploading an image!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Classifying waste...</p>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
